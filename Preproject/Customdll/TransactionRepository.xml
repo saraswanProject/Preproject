@@ -1,0 +1,708 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TransactionRepository</name>
+    </assembly>
+    <members>
+        <member name="T:TransactionRepository.Country">
+            <summary>
+            Provides methods related to acquiring countrycodes and names 
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.Country.#ctor(System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="AllCultures"></param>
+        </member>
+        <member name="P:TransactionRepository.Country.Countries">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.Country.GetCountryInfoByISO3(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="ISO3"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Country.GetCountryInfoByName(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="CountryName"></param>
+            <param name="NativeName"></param>
+            <param name="IsNeutral"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Country.GetISO2(System.String)">
+            <summary>
+            Gets the ISO2 country code from countryname
+            </summary>
+            <param name="CountryName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Country.GetISO3(System.String)">
+            <summary>
+            Gets ISO3 country code from the countryname
+            </summary>
+            <param name="CountryName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Country.GetCountryName(System.String,System.Boolean)">
+            <summary>
+            Gets the countryname from ISO3 country code
+            </summary>
+            <param name="ISO3"></param>
+            <param name="ReturnNativeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Country.GetCountryNameISO2(System.String,System.Boolean)">
+            <summary>
+            Gets the country name from ISO2 countrycode
+            </summary>
+            <param name="ISO2"></param>
+            <param name="ReturnNativeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Country.GetISO2ISO3(System.String)">
+            <summary>
+            Gets ISO2 country code from ISO3 country code
+            </summary>
+            <param name="ISO3"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Country.GetISO3ISO2(System.String)">
+            <summary>
+            Gets ISO3 countrycode frm ISO2 country code 
+            </summary>
+            <param name="ISO2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Country.GetIetfLanguageTag(System.String,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="CountryName"></param>
+            <param name="NativeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Country.GetRegionGeoId(System.String,System.Boolean)">
+            <summary>
+            Gets GEOId from countryname
+            </summary>
+            <param name="CountryName"></param>
+            <param name="NativeName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TransactionRepository.Country.CountryInfo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TransactionRepository.Country.CountryInfo.Culture">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TransactionRepository.Country.CountryInfo.Region">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TransactionRepository.Cryptographer">
+            <summary>
+            Provides methods required for cryptography
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.Cryptographer.GenerateSHA256String(System.String)">
+            <summary>
+            Genereates SHA256 from the input string
+            </summary>
+            <param name="inputString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Cryptographer.GenerateSHA512String(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="inputString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Cryptographer.HMAC_SHA256(System.String,System.String)">
+            <summary>
+            Gets HMAC256 string from the input and the key provided
+            </summary>
+            <param name="input"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Cryptographer.SignData(System.String,System.String)">
+            <summary>
+            Signs the request provided to it using the path of the certificate provided as privateKey
+            </summary>
+            <param name="data"></param>
+            <param name="privateKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.Cryptographer.GetCertString(System.String)">
+            <summary>
+            Gets the string from the certificate
+            </summary>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TransactionRepository.CustomerDetailRepository">
+            <summary>
+            Repository to interact with database
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.CustomerDetailRepository.#ctor(System.String)">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="M:TransactionRepository.CustomerDetailRepository.GetCustomerDetail(System.String)">
+            <summary>
+            get customer detail
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.CustomerDetailRepository.UpdateKYCCustomer(System.String,System.String)">
+            <summary>
+            udpate kyc
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.CustomerDetailRepository.SaveUpdateKycDetails(System.String,System.String,System.String,System.String)">
+            <summary>
+            save kyc details
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.CustomerDetailRepository.GetKycDetailId(System.String)">
+            <summary>
+            get kyc id
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.CustomerDetailRepository.GetArtimisIDKycDetail">
+            <summary>
+            get artimis id
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.CustomerDetailRepository.CatchError(System.Object,System.String)">
+            <summary>
+            function to store catch exception
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.CustomerDetailRepository.RunSQL(System.String)">
+            <summary>
+            call database interaction
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.CustomerDetailRepository.GetValueFromStaticData(System.String,System.String)">
+            <summary>
+            get value from static data
+            </summary>
+        </member>
+        <member name="T:TransactionRepository.EncryptDecrypt">
+            <summary>
+            Methos to encrypt and decrypt the plain text 
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.EncryptDecrypt.Encrypt(System.String,System.String)">
+            <summary>
+            Encrypts the clear text using the encryptionKey provided to it 
+            </summary>
+            <param name="clearText"></param>
+            <param name="encryptionKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.EncryptDecrypt.Decrypt(System.String,System.String)">
+            <summary>
+            Decrypts the ciphertext using the encryptionKey
+            </summary>
+            <param name="cipherText"></param>
+            <param name="encryptionKey"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TransactionRepository.FormatHelper">
+            <summary>
+            Helper clas to maintain the format either it be datatable or xml document
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.FormatHelper.SingleQuote(System.String)">
+            <summary>
+            Gets the singlequoted string provided to it 
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.FormatHelper.getFieldValue(System.Data.DataTable,System.String,System.Int32)">
+            <summary>
+            Gets the specified fieldname from the datable
+            </summary>
+            <param name="dt"></param>
+            <param name="fieldName"></param>
+            <param name="row"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.FormatHelper.GetXMLValue(System.Xml.XmlDocument,System.String)">
+            <summary>
+            Gets the value of the specified nodename from the xml document
+            </summary>
+            <param name="xmlObj"></param>
+            <param name="NodeName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TransactionRepository.ICustomerDetailRepository">
+            <summary>
+            The methos available to interact with the database regarding to customer information
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.ICustomerDetailRepository.GetCustomerDetail(System.String)">
+            <summary>
+            get customerdetail info
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.ICustomerDetailRepository.UpdateKYCCustomer(System.String,System.String)">
+            <summary>
+            update kyc
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.ICustomerDetailRepository.SaveUpdateKycDetails(System.String,System.String,System.String,System.String)">
+            <summary>
+            save kyc details
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.ICustomerDetailRepository.GetKycDetailId(System.String)">
+            <summary>
+            get kyc detail id
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.ICustomerDetailRepository.GetArtimisIDKycDetail">
+            <summary>
+            get artemis id
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.ICustomerDetailRepository.GetValueFromStaticData(System.String,System.String)">
+            <summary>
+            get value from static data
+            </summary>
+        </member>
+        <member name="T:TransactionRepository.ITransactionRepository">
+            <summary>
+            The methos available to interact with the database regarding to the transaction and partner setup
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.GetAPITransactionDetail(TransactionRepository.Models.APIRequest,System.String,System.String)">
+            <summary>
+            Gets the Transaction Detail of the <c>tranno</c> passed in <see cref="T:TransactionRepository.Models.APIRequest"/>. If using older version than v10, pass <c>v9</c> in version parameter
+            </summary>
+            <param name="stuff"><see cref="T:TransactionRepository.Models.APIRequest"/> Pass APIRequest model as a parameter</param>
+            <param name="version">if using older version than v10, pass this parameter as <c>v9</c></param>
+            <param name="encryptionKey">if masking is not done in Database,use as optional</param>
+            <para><see cref="T:TransactionRepository.Models.TransactionDetail"/> is returned from the store procedure <c>spa_GetAPI_transaction</c>. if older version then make sure you have store procedure exists as <c>spa_GetAPI_transaction_Connect</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.ConfirmTransactionAPI(TransactionRepository.Models.APIRequest)">
+            <summary>
+            Call this function to approve the transaction once you received successfully post to API Partners
+            </summary>
+            <param name="stuff"><see cref="T:TransactionRepository.Models.APIRequest"/> Pass APIRequest model as a parameter</param>
+            <para><see cref="T:TransactionRepository.Models.StatusCommon"/> is returned from the store procedure <c>spa_confirmTransactionAPI_Hold</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.ConfirmTransactionAPIHold(TransactionRepository.Models.APIRequest)">
+            <summary>
+            Call this function to approve the transaction if Partner API is not setup
+            This will update the status as Un-Paid
+            </summary>
+            <param name="stuff"><see cref="T:TransactionRepository.Models.APIRequest"/> Pass APIRequest model as a parameter</param>
+            <para><see cref="T:TransactionRepository.Models.StatusCommon"/> is returned from the store procedure <c>spa_confirmTransaction_v4</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.GetTransactionDetailByID(System.String,System.String)">
+            <summary>
+            Gets the Transaction Detail by <c>tranNo</c>. 
+            </summary>
+            <param name="transactionNo">Transaction Number</param>
+            <param name="transactionType">refno or tranno, if Blank then TranNo</param>
+            <para><see cref="T:TransactionRepository.Models.TransactionDetail"/> is returned from the store procedure <c>spa_GetAPI_transaction</c>. if older version then make sure you have store procedure exists as <c>spa_GetAPI_transaction_Connect</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.CancelTransactionAPI(TransactionRepository.Models.APIRequest)">
+            <summary>
+            Call this function to confirm the transaction 
+            </summary>
+            <param name="stuff"><see cref="T:TransactionRepository.Models.APIRequest"/> Pass APIRequest model as a parameter</param>
+            <para><see cref="T:TransactionRepository.Models.StatusCommon"/> is returned from the store procedure <c>spa_cancel_transaction_API</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.UpdateBankList(System.Collections.Generic.List{TransactionRepository.Models.BankList},System.String,System.String)">
+            <summary>
+            Call this function to insert commercial banks in the system 
+            </summary>
+            <param name="bankList"><see cref="T:TransactionRepository.Models.BankList"/> Partner's bank list to insert in the system</param>
+            <param name="country">The country code (ISO3)</param>
+            <param name="partnerCode">The partner code assigned to the partner of the system</param>
+            <para><see cref="T:TransactionRepository.Models.APIResponse"/> is returned from the store procedure <c>spa_common_banklistUpdate</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.GetTransactionForPushQueue">
+            <summary>
+            Call this function to GetTransactionForPushQueue
+            </summary>
+            <para><see cref="T:System.Data.DataTable"/> is returned from the store procedure <c>spa_TXN_GET_SCH</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.GetTransactionForStatusCheckQueue(System.String)">
+            <summary>
+            Call this function to GetTransactionForStatusCheckQueue 
+            </summary>
+            <param name="partnerCode">The partner code assigned to the partner of the system</param>
+            <para><see cref="T:System.Data.DataTable"/> is returned from the store procedure <c>spa_TXN_STATUS_SCH</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.GetAPIDetailByPartnerCode(System.String,System.String)">
+            <summary>
+            Call this function to GetAPIDetailByPartnerCode
+            </summary>
+            <param name="partnerCode">The partner code assigned to the partner of the system</param>
+            <param name="encryptionKey">if masking is not done in Database,use as optional</param>
+            <para><see cref="T:TransactionRepository.Models.APIInfo"/> is returned</para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.UpdateAPIStagingTxn(System.String,System.String)">
+            <summary>
+            Call this function to UpdateAPIStagingTxn
+            </summary>
+            <param name="tranno">The partner code assigned to the partner of the system</param>
+            <param name="flag">The partner code assigned to the partner of the system</param>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.UpdateAPIStatus(TransactionRepository.Models.APIInfo,TransactionRepository.Models.APIRequest,System.String,System.String)">
+            <summary>
+            Call this function to UpdateAPIStatus; The spa_APIstatusUpdate store procedure is executed 
+            </summary>
+            <param name="api"><see cref="T:TransactionRepository.Models.APIInfo"/>APIInfo as a parameter</param>
+            <param name="stuff"><see cref="T:TransactionRepository.Models.APIRequest"/> Pass APIRequest model as a parameter</param>
+            <param name="payoutStatus">The payout status</param>
+            <param name="descriptions">Descriptions if needed</param>
+            <para><c>spa_APIstatusUpdate</c> is executed</para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.UpdateConfirmID(TransactionRepository.Models.APIRequest)">
+            <summary>
+            Call this function to CreatePartnerCustomer;updates moneysend_hold and sets c2c_pin_no as stuff.partner_refno by tranno
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.CreatePartnerCustomer(System.String,System.String,System.String)">
+            <summary>
+            Call this function to CreatePartnerCustomer;inserts into PartnerCustomerInfo
+            </summary>
+            <param name="customerDetailSno">The customerDetailSno of this customer</param>
+            <param name="partnerCustomerId">The partnerCustomerId</param>
+            <param name="partnerCode">The partner code assigned to this partner in the system</param>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.RunSQL(System.String,System.Boolean)">
+            <summary>
+            Call this function to excute sql 
+            </summary>
+            <param name="sql">The sql to be executed</param>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.ErrorLog(System.String,System.String)">
+            <summary>
+            Call this function to Log error in the system;executes spa_TXN_ERROR_SCH store procedure
+            </summary>
+            <param name="tranno">The transaction number in the system</param>
+            <param name="msg">Exception message</param>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.ExecuteSP(System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Call this function to ExecuteSP
+            </summary>
+            <param name="procedureName">The name of the store procedure in the system</param>
+            <param name="sqlParameter">The parameters for the store procedure</param>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.CatchError(System.Object,System.String)">
+            <summary>
+            Call this function to insert exceptions
+            </summary>
+            <param name="ex"><see cref="T:System.Object"/>The exception object </param>
+            <param name="ErrorFrom">The name of the function form which the exception occured</param>
+            <para><see cref="T:System.String"/>  error_id is returned from the store procedure <c>spa_SOAPError</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.BatchTimeChecker(System.String)">
+            <summary>
+            Call this function to BatchTimeChecker
+            </summary>
+            <param name="batchName">The name of the batch in the system</param>
+            <para><see cref="T:System.String"/> is returned from the store procedure <c>spa_update_monitor_system</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.AddAPILog(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Adds request/response logs to the system while calling partner's APIs
+            </summary>
+            <param name="flag">set flag as 'i' for inserting the request and 'u' after getting the response from partners api </param>
+            <param name="partnerId">The partner id  the system</param>
+            <param name="partnerTranId">The partnerTranId</param>
+            <param name="reqxml">The request to be sent at the partner's end </param>
+            <param name="userId">The userId of the funcrion invoker</param>
+            <param name="methodName">The name of the method that is being called</param>
+            <param name="log_Sno">The string value returned d=from this method when flag was 'i'</param>
+            <para><see cref="T:System.String"/>log_Sno is returned from the store procedure <c>spa_soapLog</c></para>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.GetChannelCode(System.String)">
+            <summary>
+            Gets AGENT_SHORT_CODE from agentdetail 
+            </summary>
+            <param name="confirmationId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.GetStatementReport(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <returns>Datatable </returns>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.GetBankDetail(System.String)">
+            <summary>
+            Gets Commercial Bank Details 
+            </summary>
+            <param name="commercialBankID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.ITransactionRepository.SetMaintenance(System.String,System.String,System.String)">
+            <summary>
+            Pause API Call if any error in connection for 10 mins
+            </summary>
+            <param name="apiPartnerCode">PartnerCode</param>
+            <param name="remarks">Description</param>
+            <param name="userId">API UserID</param>
+            <returns></returns>
+        </member>
+        <member name="T:TransactionRepository.Models.PushNotification">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TransactionRepository.Models.PushNotificationList">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TransactionRepository.Models.CustomerDetail">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:TransactionRepository.Models.TransactionDetail">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TransactionRepository.Models.IDDetail.issue_county_code">
+            <summary>
+             Document ID Issued country ISO3 code
+            </summary>
+        </member>
+        <member name="P:TransactionRepository.Models.IDDetail.issue_country_iso2">
+            <summary>
+             Document ID Issued country ISO2 code
+            </summary>
+        </member>
+        <member name="P:TransactionRepository.Models.IDDetail.issue_country_name">
+            <summary>
+             Document ID Issued country Name
+            </summary>
+        </member>
+        <member name="P:TransactionRepository.Models.IDDetail.issue_state">
+            <summary>
+             Document ID Issued States Code
+             <para>Select static_data from STATIC_VALUES where sno=99</para>
+             <para>Sender Field : senderdocissuestate </para>
+             <para>Receiver Field : receiverphotoidstate </para>
+            </summary>
+        </member>
+        <member name="P:TransactionRepository.Models.IDDetail.partner_id_type">
+            <summary>
+             Partner's Document ID Type.<example>Test</example> ID Type must be mapped according to the partner's requirement.
+             <c>PARTNER_FIELD_MAPPING</c> is mapped with <c>STATIC_VALUES</c>
+             <para>Select * from <c>PARTNER_FIELD_MAPPING</c> where Partner_Code={PartnerCode}</para>
+            </summary>
+        </member>
+        <member name="T:TransactionRepository.TransactionRepo">
+            <summary>
+            The methos available to interact with the database regarding to the transaction and partner setup
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            pass dll verification token,connection string,isTokenEnabled and version
+            </summary>
+            <param name="token"></param>
+            <param name="connectionString"></param>
+            <param name="isTokenEnabled"></param>
+            <param name="version"></param>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.CancelTransactionAPI(TransactionRepository.Models.APIRequest)">
+            <summary>
+            Call this function to cancel the transaction
+            </summary>
+            <param name="stuff"><see cref="T:TransactionRepository.Models.APIRequest"/> Pass APIRequest model as a parameter</param>
+            <para><see cref="T:TransactionRepository.Models.StatusCommon"/> is returned from the store procedure <c>spa_cancel_transaction_API</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.ConfirmTransactionAPI(TransactionRepository.Models.APIRequest)">
+            <summary>
+            Call this function to approve the transaction once you received successfully post to API Partners
+            </summary>
+            <param name="stuff"><see cref="T:TransactionRepository.Models.APIRequest"/> Pass APIRequest model as a parameter</param>
+            <para><see cref="T:TransactionRepository.Models.StatusCommon"/> is returned from the store procedure <c>spa_confirmTransactionAPI_Hold</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.GetAPIDetailByPartnerCode(System.String,System.String)">
+            <summary>
+            Call this function to GetAPIDetailByPartnerCode
+            </summary>
+            <param name="partnerCode">The partner code assigned to the partner of the system</param>
+            <param name="encryptionKey">if masking is not done in Database,use as optional</param>
+            <para><see cref="T:TransactionRepository.Models.APIInfo"/> is returned</para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.GetAPITransactionDetail(TransactionRepository.Models.APIRequest,System.String,System.String)">
+            <summary>
+            Gets the Transaction Detail of the <c>tranno</c> passed in <see cref="T:TransactionRepository.Models.APIRequest"/>. If using older version than v10, pass <c>v9</c> in version parameter
+            </summary>
+            <param name="stuff"><see cref="T:TransactionRepository.Models.APIRequest"/> Pass APIRequest model as a parameter</param>
+            <param name="version">if using older version than v10, pass this parameter as <c>v9</c></param>
+            <param name="encryptionKey">if masking is not done in Database,use as optional</param>
+            <para><see cref="T:TransactionRepository.Models.TransactionDetail"/> is returned from the store procedure <c>spa_GetAPI_transaction</c>. if older version then make sure you have store procedure exists as <c>spa_GetAPI_transaction_Connect</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.GetTransactionDetailByID(System.String,System.String)">
+            <summary>
+            Gets the Transaction Detail by <c>tranNo</c>. 
+            </summary>
+            <param name="transactionNo">Transaction Number</param>
+            <param name="transactionType">refno or tranno, if Blank then TranNo</param>
+            <para><see cref="T:TransactionRepository.Models.TransactionDetail"/> is returned from the store procedure <c>spa_GetAPI_transaction</c>. if older version then make sure you have store procedure exists as <c>spa_GetAPI_transaction_Connect</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.GetTransactionForPushQueue">
+            <summary>
+            Call this function to GetTransactionForPushQueue
+            </summary>
+            <para><see cref="T:System.Data.DataTable"/> is returned from the store procedure <c>spa_TXN_GET_SCH</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.GetTransactionForStatusCheckQueue(System.String)">
+            <summary>
+            Call this function to GetTransactionForStatusCheckQueue
+            </summary>
+            <param name="partnerCode">The partner code assigned to the partner of the system</param>
+            <para><see cref="T:System.Data.DataTable"/> is returned from the store procedure <c>spa_TXN_STATUS_SCH</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.UpdateBankList(System.Collections.Generic.List{TransactionRepository.Models.BankList},System.String,System.String)">
+            <summary>
+            Call this function to insert commercial banks in the system
+            </summary>
+            <param name="bankLists"><see cref="T:TransactionRepository.Models.BankList"/> Partner's bank list to insert in the system</param>
+            <param name="country">The country code (ISO3)</param>
+            <param name="partnerCode">The partner code assigned to the partner of the system</param>
+            <para><see cref="T:TransactionRepository.Models.APIResponse"/> is returned from the store procedure <c>spa_common_banklistUpdate</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.RunSQL(System.String,System.Boolean)">
+            <summary>
+            Call this function to excute sql
+            </summary>
+            <param name="sql">The sql to be executed</param>
+            <param name="isLog">true if you want to store in Log Database</param>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.ErrorLog(System.String,System.String)">
+            <summary>
+            Call this function to Log error in the system;executes spa_TXN_ERROR_SCH store procedure
+            </summary>
+            <param name="tranno">The transaction number in the system</param>
+            <param name="msg">Exception message</param>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.ExecuteSP(System.String,System.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Call this function to ExecuteSP
+            </summary>
+            <param name="procedureName">The name of the store procedure in the system</param>
+            <param name="sqlParameter">The parameters for the store procedure</param>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.CatchError(System.Object,System.String)">
+            <summary>
+            Call this function to insert exceptions
+            </summary>
+            <param name="ex"><see cref="T:System.Object"/>The exception object </param>
+            <param name="ErrorFrom">The name of the function form which the exception occured</param>
+            <para><see cref="T:System.String"/>  error_id is returned from the store procedure <c>spa_SOAPError</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.BatchTimeChecker(System.String)">
+            <summary>
+            Call this function to BatchTimeChecker
+            </summary>
+            <param name="batchName">The name of the batch in the system</param>
+            <para><see cref="T:System.String"/> is returned from the store procedure <c>spa_update_monitor_system</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.UpdateAPIStagingTxn(System.String,System.String)">
+            <summary>
+            Call this function to UpdateAPIStagingTxn
+            </summary>
+            <param name="tranno">The partner code assigned to the partner of the system</param>
+            <param name="flag">The partner code assigned to the partner of the system</param>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.AddAPILog(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Adds request/response logs to the system while calling partner's APIs
+            </summary>
+            <param name="flag">set flag as 'i' for inserting the request and 'u' after getting the response from partners api </param>
+            <param name="partnerId">The partner id  the system</param>
+            <param name="partnerTranId">The partnerTranId</param>
+            <param name="reqxml">The request to be sent at the partner's end </param>
+            <param name="userId">The userId of the funcrion invoker</param>
+            <param name="methodName">The name of the method that is being called</param>
+            <param name="log_Sno">The string value returned d=from this method when flag was 'i'</param>
+            <para><see cref="T:System.String"/>log_Sno is returned from the store procedure <c>spa_soapLog</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.UpdateAPIStatus(TransactionRepository.Models.APIInfo,TransactionRepository.Models.APIRequest,System.String,System.String)">
+            <summary>
+            Call this function to UpdateAPIStatus; The spa_APIstatusUpdate store procedure is executed
+            </summary>
+            <param name="api"><see cref="T:TransactionRepository.Models.APIInfo"/>APIInfo as a parameter</param>
+            <param name="stuff"><see cref="T:TransactionRepository.Models.APIRequest"/> Pass APIRequest model as a parameter</param>
+            <param name="payoutStatus">The payout status</param>
+            <param name="descriptions">Descriptions if needed</param>
+            <para><c>spa_APIstatusUpdate</c> is executed</para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.UpdateConfirmID(TransactionRepository.Models.APIRequest)">
+            <summary>
+            Call this function to CreatePartnerCustomer;updates moneysend_hold and sets c2c_pin_no as stuff.partner_refno by tranno
+            </summary>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.CreatePartnerCustomer(System.String,System.String,System.String)">
+            <summary>
+            Call this function to CreatePartnerCustomer;inserts into PartnerCustomerInfo
+            </summary>
+            <param name="customerDetailSno">The customerDetailSno of this customer</param>
+            <param name="partnerCustomerId">The partnerCustomerId</param>
+            <param name="partnerCode">The partner code assigned to this partner in the system</param>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.GetChannelCode(System.String)">
+            <summary>
+            Gets AGENT_SHORT_CODE from agentdetail
+            </summary>
+            <param name="confirmationId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.ConfirmTransactionAPIHold(TransactionRepository.Models.APIRequest)">
+            <summary>
+            Call this function to approve the transaction if API Partner is not setup
+            This will update the status as Un-Paid
+            </summary>
+            <param name="stuff"><see cref="T:TransactionRepository.Models.APIRequest"/> Pass APIRequest model as a parameter</param>
+            <para><see cref="T:TransactionRepository.Models.StatusCommon"/> is returned from the store procedure <c>spa_confirmTransaction_v4</c></para>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.GetBankDetail(System.String)">
+            <summary>
+            Get the Bank Details
+            </summary>
+            <param name="commercialBankID">Commercial Bank ID</param>
+            <returns>BankDetail</returns>
+        </member>
+        <member name="M:TransactionRepository.TransactionRepo.SetMaintenance(System.String,System.String,System.String)">
+            <summary>
+            Pause API Call if any error in connection for 10 mins
+            </summary>
+            <param name="apiPartnerCode">PartnerCode</param>
+            <param name="remarks">Description</param>
+            <param name="userId">API UserID</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
