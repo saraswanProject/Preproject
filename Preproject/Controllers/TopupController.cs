@@ -35,6 +35,33 @@ namespace Preproject.Controllers
             this._maintainenceService = maintainenceService;
         }
 
+
+        [HttpGet]
+        [Route("balanceCheck")]
+        public async Task<IActionResult> getbalance()
+        {
+            try
+            {
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/account/balance");
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
         [HttpGet]
         [Route("countryList")]
         public async Task<IActionResult> getCountryList()
@@ -57,13 +84,40 @@ namespace Preproject.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+
+
+        [HttpGet]
+        [Route("errorList")]
+        public async Task<IActionResult> getErrorList()
+        {
+            try
+            {
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/errors");
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
 
         }
 
 
+
         [HttpGet]
         [Route("operatorlist")]
-        public async Task<IActionResult> geOperatorListt(operatorModel operatorModel)
+        public async Task<IActionResult> getoperatorListt(operatorModel operatorModel)
         {
             try
             {
@@ -92,6 +146,57 @@ namespace Preproject.Controllers
 
 
         [HttpGet]
+        [Route("catwisecountry")]
+        public async Task<IActionResult> getcountrybycatgList(productModel productModel)
+        {
+            try
+            {
+                string url = "https://sandbox.valuetopup.com/api/v2/catalog/getproducts";
+
+                string requestUrl = $"{url}?operatorId=&countryCode=&categoryId={productModel.categoryId}";
+
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
+
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(result);
+                //List<countrybyCatgModel> countrybyCatgModels = JsonConvert.DeserializeObject<List<countrybyCatgModel>>(result);
+                var distinctCountryCodes = apiResponse.payLoad
+                                            .Select(x => x.countryCode)
+                                            .Distinct()
+                                            .ToList();
+
+                    var clientcountry = new HttpClient();
+                    var requestcountry = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/countries");
+                    requestcountry.Headers.Add("Accept", "application/json");
+                    requestcountry.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+                    var responsecountry = await clientcountry.SendAsync(requestcountry);
+                responsecountry.EnsureSuccessStatusCode();
+                    await responsecountry.Content.ReadAsStringAsync();
+                    var countryResult = await responsecountry.Content.ReadAsStringAsync();
+                    var countryResponse = JsonConvert.DeserializeObject<CountryApiResponse>(countryResult);
+                    var matchedCountries = countryResponse.payLoad.Where(c => distinctCountryCodes.Contains(c.countryCode))
+                        .ToList();
+                    return Ok(matchedCountries);
+            
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+            [HttpGet]
         [Route("productlist")]
         public async Task<IActionResult> getProductList(productModel productModel)
         {
@@ -118,6 +223,39 @@ namespace Preproject.Controllers
             }
            
         }
+       
+
+        [HttpGet]
+        [Route("giftId")]
+        public async Task<IActionResult> getgiftId(giftidModel giftidModel)
+        {
+            try
+            {
+                string url = "https://sandbox.valuetopup.com/api/v2/catalog/skus/giftcards";
+
+                string requestUrl = $"{url}?operatorId={giftidModel.productId}&countryCode={giftidModel.countryCode}&categoryId={giftidModel.skuId}";
+
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
+
 
 
         [HttpGet]
@@ -150,37 +288,243 @@ namespace Preproject.Controllers
          
         }
 
+
+
+
         [HttpPost]
-        [Route("topup")]
+        [Route("mobileTopup")]
         public async Task<IActionResult> getTopup(mobileTopupModel mobileTopupModel) 
         {
-            var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://sandbox.valuetopup.com/api/v2/transaction/topup");
-            request.Headers.Add("Accept", "application/json");
-            request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
-
-            var payload = new 
+            try
             {
-                skuId=mobileTopupModel.skuId,
-                amount=mobileTopupModel.amount,
-                mobilw=mobileTopupModel.mobile,
-                correlationId=mobileTopupModel.correlationId,
-                senderMobile=mobileTopupModel.senderMobile,
-                transactionCurrencyCode=mobileTopupModel.transactionCurrencyCode,
-                numberOfPlanMonths=mobileTopupModel.numberOfPlanMonths,
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://sandbox.valuetopup.com/api/v2/transaction/topup");
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
 
+                var payload = new
+                {
+                    skuId = mobileTopupModel.skuId,
+                    amount = mobileTopupModel.amount,
+                    mobile = mobileTopupModel.mobile,
+                    correlationId = mobileTopupModel.correlationId,
+                    senderMobile = mobileTopupModel.senderMobile,
+                    boostPin=mobileTopupModel.boostPin,
+                    transactionCurrencyCode = mobileTopupModel.transactionCurrencyCode,
+                    numberOfPlanMonths = mobileTopupModel.numberOfPlanMonths,
+                    AdditionalInfo = mobileTopupModel.AdditionalInfos
 
-            };
-            string strJSON = JsonConvert.SerializeObject(payload);
-            var content = new StringContent(strJSON, Encoding.UTF8, "application/json");
-            request.Content = content;
-            var response = await client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            var result = await response.Content.ReadAsStringAsync();
+                };
 
-            return Ok(result);
+                string strJSON = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(strJSON, Encoding.UTF8, "application/json");
+                request.Content = content;
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                var result = await response.Content.ReadAsStringAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet]
+        [Route("catagorylist")]
+        public async Task<IActionResult> categoryList()
+        {
+            var categoryList = Enum.GetValues(typeof(CategoryType))
+                       .Cast<CategoryType>()
+                       .Select(e => new
+                       {
+                           Key = (int)e,
+                           Value = e.ToString()
+                       })
+                       .ToList();
+
+            return Ok(categoryList);
         }
 
 
+        [HttpPost]
+        [Route("billPayment")]
+        public async Task<IActionResult> billPay(billPayment billPayment)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                var request = new HttpRequestMessage(
+                    HttpMethod.Post, "https://sandbox.valuetopup.com/api/v2/transaction/billpay");
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
+                var payload = new
+                {
+                    accountNumber = billPayment.accountNumber,
+                    amount = billPayment.amount,
+                    correlationId = billPayment.correlationId,
+                    skuId = billPayment.skuId,
+                    mobileNumber = billPayment.mobileNumber,
+                    senderMobile = billPayment.senderMobile,
+                    senderName = billPayment.senderName,
+                    transactionCurrencyCode = billPayment.transactionCurrencyCode,
+                    AdditionalInfo = billPayment.AdditionalInfos
+                };
+
+                string strJSON = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(strJSON, Encoding.UTF8, "application/json");
+                request.Content = content;
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                var result = await response.Content.ReadAsStringAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpPost]
+        [Route("pinTransaction")]
+        public async Task<IActionResult> pintxn(pinTransaction pinTransaction)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                var request = new HttpRequestMessage(
+                    HttpMethod.Post, "https://sandbox.valuetopup.com/api/v2/transaction/pin");
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
+                var payload = new
+                {
+                    correlationId = pinTransaction.correlationId,
+                    skuId = pinTransaction.skuId,
+                    recipient = pinTransaction.recipient,
+                    AdditionalInfo = pinTransaction.AdditionalInfos
+                };
+
+                string strJSON = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(strJSON, Encoding.UTF8, "application/json");
+                request.Content = content;
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                var result = await response.Content.ReadAsStringAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpPost]
+        [Route("giftcardtxn")]
+        public async Task<IActionResult> gifttxn(giftcardtxnModel giftcardtxnModel)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                var request = new HttpRequestMessage(
+                    HttpMethod.Post, "https://sandbox.valuetopup.com/api/v2/transaction/giftcard/order");
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
+                var payload = new
+                {
+                    amount = giftcardtxnModel.amount,
+                    correlationId = giftcardtxnModel.correlationId,
+                    skuId = giftcardtxnModel.skuId,
+                     firstName = giftcardtxnModel.firstName,
+                    lastName = giftcardtxnModel.lastName,
+                    recipient = giftcardtxnModel.recipient,
+                    transactionCurrencyCode = giftcardtxnModel.transactionCurrencyCode,
+                    AdditionalInfo = giftcardtxnModel.AdditionalInfos
+                };
+
+                string strJSON = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(strJSON, Encoding.UTF8, "application/json");
+                request.Content = content;
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                var result = await response.Content.ReadAsStringAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
+
+
+        [HttpPost]
+        [Route("esimTxn")]
+        public async Task<IActionResult> esim(esimtxn esimtxn)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                var request = new HttpRequestMessage(
+                    HttpMethod.Post, "https://sandbox.valuetopup.com/api/v2/esim/order");
+                request.Headers.Add("Accept", "application/json");
+                request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
+                var payload = new
+                {
+                    correlationId = esimtxn.correlationId,
+                    skuId = esimtxn.skuId,
+                };
+
+                string strJSON = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(strJSON, Encoding.UTF8, "application/json");
+                request.Content = content;
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+                var result = await response.Content.ReadAsStringAsync();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+
     }
+
+
+
+
+    public enum CategoryType
+    {
+        Pin = 1,
+        Rtr = 2,
+        BillPay = 4,
+        Sim = 5,
+        GiftCard = 6,
+        eSim = 7
+    }
+
+
 }
+

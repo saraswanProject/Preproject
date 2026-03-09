@@ -13,16 +13,17 @@ public class AuthController : ControllerBase
     private readonly IConfiguration _configuration;
     private readonly IUserService _userService;
 
-    public AuthController(IConfiguration configuration,IUserService userService)
+    public AuthController(IConfiguration configuration, IUserService userService)
     {
         _configuration = configuration;
         _userService = userService;
     }
-
     [HttpPost("token")]
     public async Task<IActionResult> GenerateToken(LoginModel model)
     {
-      var item=  BCrypt.Net.BCrypt.HashPassword("Admin@123");
+        if (model == null || string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password))
+            return BadRequest();
+
         var user = await _userService.ValidateUserAsync(model.Username, model.Password);
 
         if (user == null)
@@ -30,9 +31,8 @@ public class AuthController : ControllerBase
             {
                 token = "",
                 expire = "600",
-                code ="9999",
-                status="error"
-
+                code = "9999",
+                status = "error"
             });
 
         var claims = new List<Claim>
@@ -43,28 +43,31 @@ public class AuthController : ControllerBase
         new Claim("UserId", user.Id.ToString())
     };
 
-        var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-
+        var jwtKey = _configuration["Jwt:Key"];
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var expiryMinutes = 10;
 
         var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(10),
+            expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
             signingCredentials: creds);
 
         return Ok(new
         {
             token = new JwtSecurityTokenHandler().WriteToken(token),
-            expire ="600",
+            expire = (expiryMinutes * 60).ToString(),
             code = "0",
             status = "success"
         });
     }
 
 }
+
+   
 
 public class LoginModel
 {
