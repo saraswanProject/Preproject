@@ -2,10 +2,11 @@
 
 ﻿using Dapper;
 using Newtonsoft.Json;
+using Npgsql;
 using System.Data;
 using System.Data.Common;
 
-using Microsoft.Data.SqlClient;
+
 
 namespace Preproject.Helpers
 {
@@ -18,7 +19,7 @@ namespace Preproject.Helpers
         }
         private DbConnection GetConn()
         {
-            DbConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            NpgsqlConnection connection = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             return connection;
         }
         public async Task<IEnumerable<T>> ExecuteQuery<T>(string sql, DynamicParameters param = null, bool isproc = false)

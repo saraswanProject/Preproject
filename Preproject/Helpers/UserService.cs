@@ -1,7 +1,7 @@
 ﻿
 
 ﻿using Dapper;
-using Microsoft.Data.SqlClient;
+using Npgsql;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto.Generators;
 using Preproject.Model;
@@ -23,10 +23,9 @@ namespace Preproject.Helpers
 
         public async Task<UserModel> ValidateUserAsync(string username, string password)
         {
-            var query = @"SELECT Id, Username, PasswordHash, Role, PartnerCode, IsActive
-                  FROM PreUsers
-                  WHERE Username = @Username
-                  AND IsActive = 1";
+            var query = @"SELECT ""Id"", ""Username"", ""PasswordHash"", ""Role"", ""PartnerCode"", ""IsActive""
+              FROM ""PreUsers""
+              WHERE ""Username"" = @Username AND ""IsActive"" = true";
 
             var parameters = new DynamicParameters();
             parameters.Add("Username", username);
