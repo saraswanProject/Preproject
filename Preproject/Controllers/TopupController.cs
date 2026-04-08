@@ -255,9 +255,6 @@ namespace Preproject.Controllers
 
 
 
-
-
-
         [HttpGet]
         [Route("skulist")]
         public async Task<IActionResult> getSkuList(skuModel skuModel)
@@ -270,7 +267,7 @@ namespace Preproject.Controllers
                 string requestUrl = $"{url}?productId={skuModel.productId}&skuId={skuModel.skuId}&countryCode={skuModel.countryCode}&categoryId={skuModel.categoryId}";
 
                 var client = new HttpClient();
-                var request = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/skus");
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
                 request.Headers.Add("Accept", "application/json");
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
                 var response = await client.SendAsync(request);
