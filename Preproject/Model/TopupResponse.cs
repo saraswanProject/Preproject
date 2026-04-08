@@ -43,6 +43,8 @@ namespace Preproject.Model
     {
         public string productId { get; set; }
         public string skuId { get; set; }
+        public string countryCode { get; set; }
+        public string categoryId { get; set; }
     }
 
     public class mobileTopupModel

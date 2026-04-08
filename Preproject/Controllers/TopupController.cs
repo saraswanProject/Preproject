@@ -266,7 +266,8 @@ namespace Preproject.Controllers
             {
                 string url = "https://sandbox.valuetopup.com/api/v2/catalog/skus";
 
-                string requestUrl = $"{url}?productId={skuModel.productId}&skuId={skuModel.skuId}";
+
+                string requestUrl = $"{url}?productId={skuModel.productId}&skuId={skuModel.skuId}&countryCode={skuModel.countryCode}&categoryId={skuModel.categoryId}";
 
                 var client = new HttpClient();
                 var request = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/skus");
@@ -285,8 +286,8 @@ namespace Preproject.Controllers
                 return BadRequest(ex.Message);
             }
 
-         
-        }
+
+}
 
 
 
@@ -336,16 +337,35 @@ namespace Preproject.Controllers
         [Route("catagorylist")]
         public async Task<IActionResult> categoryList()
         {
-            var categoryList = Enum.GetValues(typeof(CategoryType))
-                       .Cast<CategoryType>()
-                       .Select(e => new
-                       {
-                           Key = (int)e,
-                           Value = e.ToString()
-                       })
-                       .ToList();
+            object categoryList = new object();
+            object response = new object();
+            try
+            {
+                 categoryList = Enum.GetValues(typeof(CategoryType))
+                      .Cast<CategoryType>()
+                      .Select(e => new
+                      {
+                          Key = (int)e,
+                          Value = e.ToString()
+                      })
+                      .ToList();
+                 response = new
+                {
+                    process_result = true,
+                    catalogue_list = categoryList
+                };
+            }
+            catch(Exception ex)
+            {
+                 response = new
+                {
+                    process_result = false,
+                    catalogue_list = categoryList
+                };
+            }
+           
 
-            return Ok(categoryList);
+            return Ok(response);
         }
 
 
@@ -524,6 +544,13 @@ namespace Preproject.Controllers
         GiftCard = 6,
         eSim = 7
     }
+
+    //public class categorylist
+    //{
+    //    public string process_result { get; set; }
+      
+    //}
+
 
 
 }
