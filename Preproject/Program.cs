@@ -4,6 +4,7 @@ using Preproject.Helpers;
 using System.Text;
 using TransactionRepository;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
@@ -13,7 +14,8 @@ builder.Services.AddSwaggerGen();
 
 // 🔐 Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
+var keyString = jwtSettings["Key"] ?? throw new Exception("JWT Key is missing");
+var key = Encoding.UTF8.GetBytes(keyString);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -22,7 +24,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = true;
+    options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -35,6 +37,9 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
+
+// ✅ Add Authorization
+builder.Services.AddAuthorization();
 
 // Your existing services
 builder.Services.AddScoped<ITransactionRepository>(s =>
@@ -57,7 +62,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// 🔐 IMPORTANT: Authentication before Authorization
+// 🔐 Order matters
 app.UseAuthentication();
 app.UseAuthorization();
 
