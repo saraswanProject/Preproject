@@ -13,10 +13,15 @@ namespace Preproject.Model
 
     public class productModel
     {
-        public string operatorId { get; set; }
-        public string countryCode { get; set; }
-        public string categoryId { get; set; }
+        public string? operatorId { get; set; }
+        public string? countryCode { get; set; }
+        public string? categoryId { get; set; }
 
+    }
+
+    public class catbycountryModel
+    {
+        public string categoryId { get; set; }
     }
 
     public class giftidModel

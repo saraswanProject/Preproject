@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
             return Unauthorized(new
             {
                 token = "",
-                expire = "600",
+                expire = "60000",
                 code = "9999",
                 status = "error"
             });

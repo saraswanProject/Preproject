@@ -36,7 +36,7 @@ namespace Preproject.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("balanceCheck")]
         public async Task<IActionResult> getbalance()
         {
@@ -88,7 +88,7 @@ namespace Preproject.Controllers
 
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("errorList")]
         public async Task<IActionResult> getErrorList()
         {
@@ -115,7 +115,7 @@ namespace Preproject.Controllers
 
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("operatorlist")]
         public async Task<IActionResult> getoperatorListt(operatorModel operatorModel)
         {
@@ -145,15 +145,15 @@ namespace Preproject.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("catwisecountry")]
-        public async Task<IActionResult> getcountrybycatgList(productModel productModel)
+        public async Task<IActionResult> getcountrybycatgList(productModel catbycountryModel)
         {
             try
             {
                 string url = "https://sandbox.valuetopup.com/api/v2/catalog/getproducts";
 
-                string requestUrl = $"{url}?operatorId=&countryCode=&categoryId={productModel.categoryId}";
+                string requestUrl = $"{url}?categoryId={catbycountryModel.categoryId}";
 
                 var client = new HttpClient();
                 var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
@@ -184,9 +184,6 @@ namespace Preproject.Controllers
                         .ToList();
                     return Ok(matchedCountries);
             
-
-
-
             }
             catch (Exception ex)
             {
@@ -196,7 +193,7 @@ namespace Preproject.Controllers
         }
 
 
-            [HttpGet]
+            [HttpPost]
         [Route("productlist")]
         public async Task<IActionResult> getProductList(productModel productModel)
         {
@@ -212,6 +209,7 @@ namespace Preproject.Controllers
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
+
                 await response.Content.ReadAsStringAsync();
                 var result = await response.Content.ReadAsStringAsync();
 
@@ -225,7 +223,7 @@ namespace Preproject.Controllers
         }
        
 
-        [HttpGet]
+        [HttpPost]
         [Route("giftId")]
         public async Task<IActionResult> getgiftId(giftidModel giftidModel)
         {
@@ -255,7 +253,7 @@ namespace Preproject.Controllers
 
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("skulist")]
         public async Task<IActionResult> getSkuList(skuModel skuModel)
         {
