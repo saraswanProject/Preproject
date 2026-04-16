@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Preproject.Helpers;
+using System.Collections.Generic;
 using System.Text;
 using TransactionRepository;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,8 +56,17 @@ builder.Services.AddTransient<IUserService, UserService>();
 var app = builder.Build();
 app.UsePathBase("/utility_api");
 
-app.UseSwagger();
-
+// 🛠️ CHANGED: Configure Swagger to prepend the Nginx reverse proxy path
+app.UseSwagger(c =>
+{
+    c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+    {
+        swaggerDoc.Servers = new List<OpenApiServer>
+        {
+            new OpenApiServer { Url = "/utility_api" }
+        };
+    });
+});
 
 //if (app.Environment.IsDevelopment())
 //{
@@ -68,17 +78,18 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/utility_api/swagger/v1/swagger.json", "TOP UP V1");
+        // Use the relative path trick here:
+        c.SwaggerEndpoint("./v1/swagger.json", "TOP UP V1");
     });
 }
 else
 {
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/utility_api/swagger/v1/swagger.json", "TOP UP V1");
+        // And here:
+        c.SwaggerEndpoint("./v1/swagger.json", "TOP UP V1");
     });
 }
-
 app.UseHttpsRedirection();
 
 // 🔐 Order matters
