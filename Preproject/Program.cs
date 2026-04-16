@@ -53,11 +53,30 @@ builder.Services.AddTransient<IMaintainenceService, MaintainenceService>();
 builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
+app.UsePathBase("/utility_api");
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+
+
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
+if (!app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/utility_api/swagger/v1/swagger.json", "TOP UP V1");
+    });
+}
+else
+{
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/utility_api/swagger/v1/swagger.json", "TOP UP V1");
+    });
 }
 
 app.UseHttpsRedirection();
