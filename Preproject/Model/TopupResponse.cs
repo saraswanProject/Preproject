@@ -11,8 +11,6 @@ namespace Preproject.Model
 
     public class operatorResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
         public List<operatorModel> payLoad { get; set; }
 
     }
@@ -26,8 +24,6 @@ namespace Preproject.Model
     }
     public class ProductResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
         public List<productModel> payLoad { get; set; }
     }
 
@@ -48,8 +44,6 @@ namespace Preproject.Model
 
     public class giftidResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
         public List<giftidModel> payLoad { get; set; }
     }
 
@@ -67,8 +61,6 @@ namespace Preproject.Model
 
     public class giftcardtxnResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
         public List<giftcardtxnModel> payLoad { get; set; }
     }
 
@@ -85,8 +77,6 @@ namespace Preproject.Model
 
     public class skuResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
         public List<skuModel> payLoad { get; set; }
     }
 
@@ -123,9 +113,7 @@ namespace Preproject.Model
     }
     public class pintxnResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
-        public List<pinTransaction> payLoad { get; set; }
+       public List<pinTransaction> payLoad { get; set; }
     }
 
     public class billPayment
@@ -144,9 +132,7 @@ namespace Preproject.Model
 
     public class billpayResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
-        public List<billPayment> payLoad { get; set; }
+      public List<billPayment> payLoad { get; set; }
     }
 
 
@@ -159,8 +145,6 @@ namespace Preproject.Model
     }
     public class esimtxnResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
         public List<esimtxn> payLoad { get; set; }
     }
 

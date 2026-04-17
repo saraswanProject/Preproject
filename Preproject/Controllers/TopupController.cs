@@ -91,7 +91,7 @@ namespace Preproject.Controllers
                 var data = JsonConvert.DeserializeObject<countryResponse>(jsonString);
 
                 res.process_result = true;
-                res.result = data;
+                res.result = data.payLoad;
 
                 return Ok(res);
             }
@@ -103,29 +103,38 @@ namespace Preproject.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("errorList")]
         public async Task<IActionResult> getErrorList()
         {
+            Result res = new Result();
             try
             {
                 var client = new HttpClient();
                 var request = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/errors");
                 request.Headers.Add("Accept", "application/json");
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                await response.Content.ReadAsStringAsync();
-                var result = await response.Content.ReadAsStringAsync();
 
-                return Ok(result);
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                // Optional: replace object with a proper OperatorResponse model if available
+                var data = JsonConvert.DeserializeObject<operatorResponse>(jsonString);
+
+                res.process_result = true;
+                res.result = data.payLoad;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                res.process_result = false;
+                res.result = ex.Message;
+
+                return BadRequest(res);
             }
-
-
         }
 
 
@@ -158,7 +167,7 @@ namespace Preproject.Controllers
                 var data = JsonConvert.DeserializeObject<operatorResponse>(jsonString);
 
                 res.process_result = true;
-                res.result = data;
+                res.result = data.payLoad;
 
                 return Ok(res);
             }
@@ -254,7 +263,7 @@ namespace Preproject.Controllers
                 var data = JsonConvert.DeserializeObject<ProductResponse>(jsonString);
 
                 res.process_result = true;
-                res.result = data;
+                res.result = data.payLoad;
 
                 return Ok(res);
             }
@@ -325,7 +334,7 @@ namespace Preproject.Controllers
                 var data = JsonConvert.DeserializeObject<skuResponse>(jsonString);
 
                 res.process_result = true;
-                res.result = data;
+                res.result = data.payLoad;
 
                 return Ok(res);
             }
@@ -378,7 +387,7 @@ namespace Preproject.Controllers
                 var data = JsonConvert.DeserializeObject<mobiletopupResponse>(jsonString);
 
                 res.process_result = true;
-                res.result = data;
+                res.result = data.payLoad;
 
                 return Ok(res);
             }
