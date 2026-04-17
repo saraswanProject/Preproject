@@ -2,30 +2,9 @@
 
 namespace Preproject.Model
 {
-    public class operatorModel
-    {
-        public string? operatorId { get; set; }
-        public string? countryCode { get; set; }
 
-    }
 
-    public class operatorResponse
-    {
-        public List<operatorModel> payLoad { get; set; }
-
-    }
-
-        public class productModel
-    {
-        public string? operatorId { get; set; }
-        public string? countryCode { get; set; }
-        public string? categoryId { get; set; }
-
-    }
-    public class ProductResponse
-    {
-        public List<productModel> payLoad { get; set; }
-    }
+     
 
 
 
@@ -64,45 +43,40 @@ namespace Preproject.Model
         public List<giftcardtxnModel> payLoad { get; set; }
     }
 
-
-    public class skuModel
-    {
-        public string? productId { get; set; }
-        public string? skuId { get; set; }
-        public string? countryCode { get; set; }
-        public string? categoryId { get; set; }
-    }
-
-
-
-    public class skuResponse
-    {
-        public List<skuModel> payLoad { get; set; }
-    }
-
+  
     public class mobileTopupModel
     {
         [Required]
         public string? skuId { get; set; }
+
         [Required]
         public string? amount { get; set; }
+
         [Required]
         public string? mobile { get; set; }
+
         public string? correlationId { get; set; }
         public string? senderMobile { get; set; }
         public string? boostPin { get; set; }
         public string? numberOfPlanMonths { get; set; }
         public string? transactionCurrencyCode { get; set; }
-        public List<AdditionalInfo> AdditionalInfos { get; set; }
 
+        public List<AdditionalInfo>? AdditionalInfos { get; set; }
     }
 
     public class mobiletopupResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
-        public object payLoad { get; set; }
+        public dynamic? payload { get; set; }
+        //public List<mobileTopupModel> payLoad { get; set; }
+
     }
+
+    public class TopupPayload
+    {
+    
+    }
+
+
 
     public class pinTransaction
     {
@@ -186,10 +160,17 @@ namespace Preproject.Model
         public string? areaCodes { get; set; }
         public string? numberLength { get; set; }
     }
-    public class countryResponse
+    public class countryResponseModel
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
+        public string? countryCode { get; set; }
+        public string? countryName { get; set; }
+        public string? region { get; set; }
+        public string? internationalCountryCode { get; set; }
+        public string? areaCodes { get; set; }
+        public string? numberLength { get; set; }
+
+    }
+        public class countryResponse{
         public List<CountryModel> payLoad { get; set; }
     }
 

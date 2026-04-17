@@ -208,32 +208,32 @@ namespace Preproject.Controllers
                                             .ToList();
 
                 // Second API call for countries
-        var clientcountry = new HttpClient();
-        var requestcountry = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/countries");
-        requestcountry.Headers.Add("Accept", "application/json");
-        requestcountry.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+                var clientcountry = new HttpClient();
+                var requestcountry = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/countries");
+                requestcountry.Headers.Add("Accept", "application/json");
+                requestcountry.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
 
-        var responsecountry = await clientcountry.SendAsync(requestcountry);
-        responsecountry.EnsureSuccessStatusCode();
+                var responsecountry = await clientcountry.SendAsync(requestcountry);
+                responsecountry.EnsureSuccessStatusCode();
 
-        var countryJson = await responsecountry.Content.ReadAsStringAsync();
-        var countryResponse = JsonConvert.DeserializeObject<CountryApiResponse>(countryJson);
+                var countryJson = await responsecountry.Content.ReadAsStringAsync();
+                var countryResponse = JsonConvert.DeserializeObject<CountryApiResponse>(countryJson);
 
-        var matchedCountries = countryResponse.payLoad
-                                .Where(c => distinctCountryCodes.Contains(c.countryCode))
-                                .ToList();
+                var matchedCountries = countryResponse.payLoad
+                                        .Where(c => distinctCountryCodes.Contains(c.countryCode))
+                                        .ToList();
 
-        // ✅ Match your pattern
-        res.process_result = true;
-        res.result = matchedCountries;
+                // ✅ Match your pattern
+                res.process_result = true;
+                res.result = matchedCountries;
 
-        return Ok(res);
-    }
-    catch (Exception ex)
-    {
-        return BadRequest(ex.Message);
-    }
-}
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
 
@@ -261,6 +261,7 @@ namespace Preproject.Controllers
 
                 // ✅ Deserialize properly
                 var data = JsonConvert.DeserializeObject<ProductResponse>(jsonString);
+                
 
                 res.process_result = true;
                 res.result = data.payLoad;
@@ -334,7 +335,7 @@ namespace Preproject.Controllers
                 var data = JsonConvert.DeserializeObject<skuResponse>(jsonString);
 
                 res.process_result = true;
-                res.result = data.payLoad;
+                res.result = data;
 
                 return Ok(res);
             }
@@ -347,16 +348,16 @@ namespace Preproject.Controllers
             }
         }
 
-
         [HttpPost]
         [Route("mobileTopup")]
-        public async Task<IActionResult> getTopup(mobileTopupModel mobileTopupModel)
+        public async Task<IActionResult> getTopup([FromBody] mobileTopupModel mobileTopupModel)
         {
             Result res = new Result();
 
             try
             {
                 var client = new HttpClient();
+
                 var request = new HttpRequestMessage(HttpMethod.Post, "https://sandbox.valuetopup.com/api/v2/transaction/topup");
 
                 request.Headers.Add("Accept", "application/json");
@@ -372,30 +373,39 @@ namespace Preproject.Controllers
                     boostPin = mobileTopupModel.boostPin,
                     transactionCurrencyCode = mobileTopupModel.transactionCurrencyCode,
                     numberOfPlanMonths = mobileTopupModel.numberOfPlanMonths,
-                    AdditionalInfo = mobileTopupModel.AdditionalInfos
+                    additionalInfos = mobileTopupModel.AdditionalInfos ?? new List<AdditionalInfo>()
                 };
 
                 string strJSON = JsonConvert.SerializeObject(payload);
                 request.Content = new StringContent(strJSON, Encoding.UTF8, "application/json");
 
                 var response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode(); 
-
                 var jsonString = await response.Content.ReadAsStringAsync();
 
-                // ✅ Deserialize response (create model if needed)
-                var data = JsonConvert.DeserializeObject<mobiletopupResponse>(jsonString);
+                //if (!response.IsSuccessStatusCode)
+                //{
+                //    return BadRequest(new
+                //    {
+                //        process_result = true,
+                //        result = JsonConvert.DeserializeObject<dynamic>(jsonString)
+                //    });
+                //}
 
-                res.process_result = true;
-                res.result = data.payLoad;
-
-                return Ok(res);
+                //var result = JsonConvert.DeserializeObject<dynamic>(jsonString);
+                //return new JsonResult(new
+                //{
+                //    process_result = true,
+                //    result = result
+                //});
+                return Content(jsonString, "application/json");
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+
 
         [HttpGet]
         [Route("catagorylist")]
@@ -405,29 +415,29 @@ namespace Preproject.Controllers
             object response = new object();
             try
             {
-                 categoryList = Enum.GetValues(typeof(CategoryType))
-                      .Cast<CategoryType>()
-                      .Select(e => new
-                      {
-                          Key = (int)e,
-                          Value = e.ToString()
-                      })
-                      .ToList();
-                 response = new
+                categoryList = Enum.GetValues(typeof(CategoryType))
+                     .Cast<CategoryType>()
+                     .Select(e => new
+                     {
+                         Key = (int)e,
+                         Value = e.ToString()
+                     })
+                     .ToList();
+                response = new
                 {
                     process_result = true,
                     catalogue_list = categoryList
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                 response = new
+                response = new
                 {
                     process_result = false,
                     catalogue_list = categoryList
                 };
             }
-           
+
 
             return Ok(response);
         }
@@ -530,7 +540,7 @@ namespace Preproject.Controllers
                     amount = giftcardtxnModel.amount,
                     correlationId = giftcardtxnModel.correlationId,
                     skuId = giftcardtxnModel.skuId,
-                     firstName = giftcardtxnModel.firstName,
+                    firstName = giftcardtxnModel.firstName,
                     lastName = giftcardtxnModel.lastName,
                     recipient = giftcardtxnModel.recipient,
                     transactionCurrencyCode = giftcardtxnModel.transactionCurrencyCode,
@@ -614,13 +624,13 @@ namespace Preproject.Controllers
     //public class categorylist
     //{
     //    public string process_result { get; set; }
-      
+
     //}
 
     public class Result
     {
         public bool process_result { get; set; } = false;
-        public dynamic result {  get; set; }
+        public dynamic result { get; set; }
     }
 
 
