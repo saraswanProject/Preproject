@@ -43,42 +43,7 @@ namespace Preproject.Model
         public List<giftcardtxnModel> payLoad { get; set; }
     }
 
-  
-    public class mobileTopupModel
-    {
-        [Required]
-        public string? skuId { get; set; }
-
-        [Required]
-        public string? amount { get; set; }
-
-        [Required]
-        public string? mobile { get; set; }
-
-        public string? correlationId { get; set; }
-        public string? senderMobile { get; set; }
-        public string? boostPin { get; set; }
-        public string? numberOfPlanMonths { get; set; }
-        public string? transactionCurrencyCode { get; set; }
-
-        public List<AdditionalInfo>? AdditionalInfos { get; set; }
-    }
-
-    public class mobiletopupResponse
-    {
-        public dynamic? payload { get; set; }
-        //public List<mobileTopupModel> payLoad { get; set; }
-
-    }
-
-    public class TopupPayload
-    {
-    
-    }
-
-
-
-    public class pinTransaction
+      public class pinTransaction
     {
         public string? correlationId { get; set; }
         public string? skuId { get; set; }
