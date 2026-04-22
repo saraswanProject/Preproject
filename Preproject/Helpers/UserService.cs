@@ -42,6 +42,53 @@ namespace Preproject.Helpers
             return user;
         }
 
+        public async Task SaveRefreshTokenAsync(string userId, string refreshToken)
+        {
+            DynamicParameters param = new DynamicParameters();
+
+            param.Add("@flag", "i");
+            param.Add("@UserId", userId);
+            param.Add("@RefreshToken", refreshToken);
+            param.Add("@ExpiryDate", DateTime.UtcNow.AddDays(7));
+
+            await _db.ExecuteQuery<RefreshTokenModel>(
+                "spa_UserRefreshToken",
+                param,
+                true
+            );
+        }
+        public async Task<RefreshTokenModel> GetRefreshTokenAsync(string userId)
+        {
+            DynamicParameters param = new DynamicParameters();
+
+            param.Add("@flag", "g");
+            param.Add("@UserId", userId);
+
+            var result = await _db.ExecuteQuery<RefreshTokenModel>(
+                "spa_UserRefreshToken",
+                param,
+                true
+            );
+
+            return result.FirstOrDefault();
+        }
+
+        public async Task UpdateRefreshTokenAsync(string userId, string newRefreshToken)
+        {
+            DynamicParameters param = new DynamicParameters();
+
+            param.Add("@flag", "u");
+            param.Add("@UserId", userId);
+            param.Add("@RefreshToken", newRefreshToken);
+            param.Add("@ExpiryDate", DateTime.UtcNow.AddDays(7));
+
+            await _db.ExecuteQuery<RefreshTokenModel>(
+                "spa_UserRefreshToken",
+                param,
+                true
+            );
+        }
+
 
         private string HashPassword(string password)
         {

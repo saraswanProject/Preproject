@@ -2,6 +2,7 @@
 
 using Dapper;
 using System.Data;
+using System.Security.Claims;
 
 namespace Preproject.Helpers
 {
@@ -16,5 +17,7 @@ namespace Preproject.Helpers
         Task<T> QuerySingleOrDefaultAsync<T>(string sql,  DynamicParameters param = null, bool isproc = false);
 
         T QuerySingleOrDefault<T>( string sql, DynamicParameters param = null,bool isproc = false);
+         ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
+        string GenerateRefreshToken();
     }
 }
