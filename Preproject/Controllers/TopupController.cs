@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Preproject.Helpers;
 using Preproject.Model;
 using System;
 using System.Net.Http;
 using System.Text;
 using TransactionRepository;
+using static Preproject.Model.operatorResponse;
 
 namespace Preproject.Controllers
 {
@@ -34,6 +36,8 @@ namespace Preproject.Controllers
             this._dbHelperService = dbHelperService;
             this._maintainenceService = maintainenceService;
         }
+
+
 
 
         [HttpPost]
@@ -66,51 +70,71 @@ namespace Preproject.Controllers
         [Route("countryList")]
         public async Task<IActionResult> getCountryList()
         {
+            Result res = new Result();
+
             try
             {
+                string url = "https://sandbox.valuetopup.com/api/v2/catalog/countries";
+
                 var client = new HttpClient();
-                var request = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/countries");
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+
                 request.Headers.Add("Accept", "application/json");
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                await response.Content.ReadAsStringAsync();
-                var result = await response.Content.ReadAsStringAsync();
 
-                return Ok(result);
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                // Optional: strongly typed model if you have one
+                var data = JsonConvert.DeserializeObject<countryResponse>(jsonString);
+
+                res.process_result = true;
+                res.result = data.payLoad;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                res.process_result = false;
+                res.result = ex.Message;
+                return BadRequest(res);
             }
-
         }
 
-
-
-        [HttpPost]
+        [HttpGet]
         [Route("errorList")]
         public async Task<IActionResult> getErrorList()
         {
+            Result res = new Result();
             try
             {
                 var client = new HttpClient();
                 var request = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/errors");
                 request.Headers.Add("Accept", "application/json");
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                await response.Content.ReadAsStringAsync();
-                var result = await response.Content.ReadAsStringAsync();
 
-                return Ok(result);
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                // Optional: replace object with a proper OperatorResponse model if available
+                var data = JsonConvert.DeserializeObject<operatorResponse>(jsonString);
+
+                res.process_result = true;
+                res.result = data.payLoad;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                res.process_result = false;
+                res.result = ex.Message;
+
+                return BadRequest(res);
             }
-
-
         }
 
 
@@ -119,29 +143,41 @@ namespace Preproject.Controllers
         [Route("operatorlist")]
         public async Task<IActionResult> getoperatorListt(operatorModel operatorModel)
         {
+            Result res = new Result();
+
             try
             {
                 string url = "https://sandbox.valuetopup.com/api/v2/catalog/operators";
 
-                string requestUrl = $"{url}?operatorId={operatorModel.operatorId}&countryCode={operatorModel.countryCode}";
+                string requestUrl =
+                    $"{url}?operatorId={operatorModel.operatorId}&countryCode={operatorModel.countryCode}";
 
                 var client = new HttpClient();
                 var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+
                 request.Headers.Add("Accept", "application/json");
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                await response.Content.ReadAsStringAsync();
-                var result = await response.Content.ReadAsStringAsync();
 
-                return Ok(result);
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                // Optional: replace object with a proper OperatorResponse model if available
+                var data = JsonConvert.DeserializeObject<operatorResponse>(jsonString);
+
+                res.process_result = true;
+                res.result = data.payLoad;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                res.process_result = false;
+                res.result = ex.Message;
 
+                return BadRequest(res);
             }
-            
         }
 
 
@@ -149,54 +185,64 @@ namespace Preproject.Controllers
         [Route("catwisecountry")]
         public async Task<IActionResult> getcountrybycatgList(productModel catbycountryModel)
         {
+            Result res = new Result();
             try
             {
                 string url = "https://sandbox.valuetopup.com/api/v2/catalog/getproducts";
-
                 string requestUrl = $"{url}?categoryId={catbycountryModel.categoryId}";
 
                 var client = new HttpClient();
                 var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
                 request.Headers.Add("Accept", "application/json");
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                await response.Content.ReadAsStringAsync();
-                var result = await response.Content.ReadAsStringAsync();
 
-                var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(result);
-                //List<countrybyCatgModel> countrybyCatgModels = JsonConvert.DeserializeObject<List<countrybyCatgModel>>(result);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse>(jsonString);
+
                 var distinctCountryCodes = apiResponse.payLoad
                                             .Select(x => x.countryCode)
                                             .Distinct()
                                             .ToList();
 
-                    var clientcountry = new HttpClient();
-                    var requestcountry = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/countries");
-                    requestcountry.Headers.Add("Accept", "application/json");
-                    requestcountry.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
-                    var responsecountry = await clientcountry.SendAsync(requestcountry);
+                // Second API call for countries
+                var clientcountry = new HttpClient();
+                var requestcountry = new HttpRequestMessage(HttpMethod.Get, "https://sandbox.valuetopup.com/api/v2/catalog/countries");
+                requestcountry.Headers.Add("Accept", "application/json");
+                requestcountry.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
+                var responsecountry = await clientcountry.SendAsync(requestcountry);
                 responsecountry.EnsureSuccessStatusCode();
-                    await responsecountry.Content.ReadAsStringAsync();
-                    var countryResult = await responsecountry.Content.ReadAsStringAsync();
-                    var countryResponse = JsonConvert.DeserializeObject<CountryApiResponse>(countryResult);
-                    var matchedCountries = countryResponse.payLoad.Where(c => distinctCountryCodes.Contains(c.countryCode))
-                        .ToList();
-                    return Ok(matchedCountries);
-            
+
+                var countryJson = await responsecountry.Content.ReadAsStringAsync();
+                var countryResponse = JsonConvert.DeserializeObject<CountryApiResponse>(countryJson);
+
+                var matchedCountries = countryResponse.payLoad
+                                        .Where(c => distinctCountryCodes.Contains(c.countryCode))
+                                        .ToList();
+
+                // ✅ Match your pattern
+                res.process_result = true;
+                res.result = matchedCountries;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
 
-            [HttpPost]
+
+        [HttpPost]
         [Route("productlist")]
         public async Task<IActionResult> getProductList(productModel productModel)
         {
+            Result res = new Result();
+
             try
             {
                 string url = "https://sandbox.valuetopup.com/api/v2/catalog/getproducts";
@@ -207,21 +253,28 @@ namespace Preproject.Controllers
                 var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
                 request.Headers.Add("Accept", "application/json");
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
-                await response.Content.ReadAsStringAsync();
-                var result = await response.Content.ReadAsStringAsync();
+                var jsonString = await response.Content.ReadAsStringAsync();
 
-                return Ok(result);
+                // ✅ Deserialize properly
+                var data = JsonConvert.DeserializeObject<ProductResponse>(jsonString);
+                
+
+                res.process_result = true;
+                res.result = data.payLoad;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-           
         }
-       
+
+
 
         [HttpPost]
         [Route("giftId")]
@@ -257,44 +310,56 @@ namespace Preproject.Controllers
         [Route("skulist")]
         public async Task<IActionResult> getSkuList(skuModel skuModel)
         {
+            Result res = new Result();
+
             try
             {
                 string url = "https://sandbox.valuetopup.com/api/v2/catalog/skus";
 
-
-                string requestUrl = $"{url}?productId={skuModel.productId}&skuId={skuModel.skuId}&countryCode={skuModel.countryCode}&categoryId={skuModel.categoryId}";
+                string requestUrl =
+                    $"{url}?productId={skuModel.productId}&skuId={skuModel.skuId}" +
+                    $"&countryCode={skuModel.countryCode}&categoryId={skuModel.categoryId}";
 
                 var client = new HttpClient();
                 var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+
                 request.Headers.Add("Accept", "application/json");
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                await response.Content.ReadAsStringAsync();
-                var result = await response.Content.ReadAsStringAsync();
 
-                return Ok(result);
+                var jsonString = await response.Content.ReadAsStringAsync();
 
+                // Replace object with strongly typed model if available
+                var data = JsonConvert.DeserializeObject<skuResponse>(jsonString);
+
+                res.process_result = true;
+                res.result = data;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                res.process_result = false;
+                res.result = ex.Message;
+
+                return BadRequest(res);
             }
-
-
-}
-
-
-
+        }
 
         [HttpPost]
         [Route("mobileTopup")]
-        public async Task<IActionResult> getTopup(mobileTopupModel mobileTopupModel) 
+        public async Task<IActionResult> getTopup([FromBody] mobileTopupModel mobileTopupModel)
         {
+            Result res = new Result();
+
             try
             {
                 var client = new HttpClient();
+
                 var request = new HttpRequestMessage(HttpMethod.Post, "https://sandbox.valuetopup.com/api/v2/transaction/topup");
+
                 request.Headers.Add("Accept", "application/json");
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
 
@@ -305,28 +370,42 @@ namespace Preproject.Controllers
                     mobile = mobileTopupModel.mobile,
                     correlationId = mobileTopupModel.correlationId,
                     senderMobile = mobileTopupModel.senderMobile,
-                    boostPin=mobileTopupModel.boostPin,
+                    boostPin = mobileTopupModel.boostPin,
                     transactionCurrencyCode = mobileTopupModel.transactionCurrencyCode,
                     numberOfPlanMonths = mobileTopupModel.numberOfPlanMonths,
-                    AdditionalInfo = mobileTopupModel.AdditionalInfos
-
+                    additionalInfos = mobileTopupModel.AdditionalInfos ?? new List<AdditionalInfo>()
                 };
 
                 string strJSON = JsonConvert.SerializeObject(payload);
-                var content = new StringContent(strJSON, Encoding.UTF8, "application/json");
-                request.Content = content;
-                var response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-                var result = await response.Content.ReadAsStringAsync();
+                request.Content = new StringContent(strJSON, Encoding.UTF8, "application/json");
 
-                return Ok(result);
+                var response = await client.SendAsync(request);
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                //if (!response.IsSuccessStatusCode)
+                //{
+                //    return BadRequest(new
+                //    {
+                //        process_result = true,
+                //        result = JsonConvert.DeserializeObject<dynamic>(jsonString)
+                //    });
+                //}
+
+                //var result = JsonConvert.DeserializeObject<dynamic>(jsonString);
+                //return new JsonResult(new
+                //{
+                //    process_result = true,
+                //    result = result
+                //});
+                return Content(jsonString, "application/json");
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
+
+
 
         [HttpGet]
         [Route("catagorylist")]
@@ -336,29 +415,29 @@ namespace Preproject.Controllers
             object response = new object();
             try
             {
-                 categoryList = Enum.GetValues(typeof(CategoryType))
-                      .Cast<CategoryType>()
-                      .Select(e => new
-                      {
-                          Key = (int)e,
-                          Value = e.ToString()
-                      })
-                      .ToList();
-                 response = new
+                categoryList = Enum.GetValues(typeof(CategoryType))
+                     .Cast<CategoryType>()
+                     .Select(e => new
+                     {
+                         Key = (int)e,
+                         Value = e.ToString()
+                     })
+                     .ToList();
+                response = new
                 {
                     process_result = true,
                     catalogue_list = categoryList
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                 response = new
+                response = new
                 {
                     process_result = false,
                     catalogue_list = categoryList
                 };
             }
-           
+
 
             return Ok(response);
         }
@@ -461,7 +540,7 @@ namespace Preproject.Controllers
                     amount = giftcardtxnModel.amount,
                     correlationId = giftcardtxnModel.correlationId,
                     skuId = giftcardtxnModel.skuId,
-                     firstName = giftcardtxnModel.firstName,
+                    firstName = giftcardtxnModel.firstName,
                     lastName = giftcardtxnModel.lastName,
                     recipient = giftcardtxnModel.recipient,
                     transactionCurrencyCode = giftcardtxnModel.transactionCurrencyCode,
@@ -483,6 +562,8 @@ namespace Preproject.Controllers
             }
 
         }
+
+
 
 
 
@@ -543,9 +624,14 @@ namespace Preproject.Controllers
     //public class categorylist
     //{
     //    public string process_result { get; set; }
-      
+
     //}
 
+    public class Result
+    {
+        public bool process_result { get; set; } = false;
+        public dynamic result { get; set; }
+    }
 
 
 }
