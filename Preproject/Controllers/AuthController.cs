@@ -66,16 +66,16 @@ public class AuthController : ControllerBase
         return Ok(new
         {
             process_result = true,
-            result = new[]
-      {
-        new
+            result = new
+      
+        
         {
             token = new JwtSecurityTokenHandler().WriteToken(token),
             expire = (expiryMinutes * 60).ToString(),
             refreshToken = refreshToken,
             code = "0",
             status = "success"
-        }
+        
     }
         });
     }
@@ -109,16 +109,15 @@ public class AuthController : ControllerBase
         return Ok(new
         {
             process_result = true,
-            result = new[]
-     {
-        new
+            result = new
+
         {
             token = newJwt,
             expire = (expiryMinutes * 60).ToString(),
             refreshToken = newRefreshToken,
             code = "0",
             status = "success"
-        }
+        
     }
         });
     }
