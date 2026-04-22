@@ -50,7 +50,7 @@ public class AuthController : ControllerBase
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var expiryMinutes = 60;
+        var expiryMinutes = 10;
 
         var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"],
@@ -65,11 +65,18 @@ public class AuthController : ControllerBase
 
         return Ok(new
         {
+            process_result = true,
+            result = new[]
+      {
+        new
+        {
             token = new JwtSecurityTokenHandler().WriteToken(token),
             expire = (expiryMinutes * 60).ToString(),
             refreshToken = refreshToken,
             code = "0",
             status = "success"
+        }
+    }
         });
     }
     [HttpPost("refresh_token")]
@@ -101,11 +108,18 @@ public class AuthController : ControllerBase
 
         return Ok(new
         {
+            process_result = true,
+            result = new[]
+     {
+        new
+        {
             token = newJwt,
             expire = (expiryMinutes * 60).ToString(),
             refreshToken = newRefreshToken,
-              code = "0",
+            code = "0",
             status = "success"
+        }
+    }
         });
     }
 
