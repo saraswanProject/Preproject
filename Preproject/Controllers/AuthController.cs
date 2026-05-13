@@ -50,7 +50,7 @@ public class AuthController : ControllerBase
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var expiryMinutes = 10;
+        var expiryMinutes = 5;
 
         var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"],
@@ -71,8 +71,8 @@ public class AuthController : ControllerBase
         
         {
             token = new JwtSecurityTokenHandler().WriteToken(token),
-            expire = (expiryMinutes * 60).ToString(),
             refreshToken = refreshToken,
+            expire = (expiryMinutes * 60).ToString(),
             code = "0",
             status = "success"
         
@@ -90,7 +90,7 @@ public class AuthController : ControllerBase
         var userId = principal.FindFirst(ClaimTypes.Name)?.Value;
 
         var savedToken = await _userService.GetRefreshTokenAsync(userId);
-        var expiryMinutes = 10;
+        var expiryMinutes = 60;
         if (savedToken == null
         || savedToken.RefreshToken != request.RefreshToken
         || savedToken.ExpiryDate <= DateTime.UtcNow
@@ -128,7 +128,7 @@ public class AuthController : ControllerBase
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var expiryMinutes = 10;
+        var expiryMinutes = 5;
 
         var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"],
@@ -155,8 +155,8 @@ public class LoginModel
 public class RefreshToken
 {
     public string Token { get; set; }
+      public bool IsRevoked { get; set; }
     public DateTime ExpiryDate { get; set; }
-    public bool IsRevoked { get; set; }
     public string UserId { get; set; }
 }
 public class TokenRequest

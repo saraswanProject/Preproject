@@ -40,10 +40,11 @@ namespace Preproject.Controllers
 
 
 
-        [HttpPost]
+        [HttpGet]
         [Route("balanceCheck")]
         public async Task<IActionResult> getbalance()
         {
+            Result res = new Result();
             try
             {
                 var client = new HttpClient();
@@ -52,14 +53,20 @@ namespace Preproject.Controllers
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                await response.Content.ReadAsStringAsync();
-                var result = await response.Content.ReadAsStringAsync();
 
-                return Ok(result);
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<balanceResponse>(jsonString);
+
+                res.process_result = true;
+                res.result = data.payLoad;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                res.process_result = false;
+                res.result = ex.Message;
+                return BadRequest(res);
             }
 
         }
@@ -335,7 +342,7 @@ namespace Preproject.Controllers
                 var data = JsonConvert.DeserializeObject<skuResponse>(jsonString);
 
                 res.process_result = true;
-                res.result = data;
+                res.result = data.payLoad;
 
                 return Ok(res);
             }
@@ -347,6 +354,46 @@ namespace Preproject.Controllers
                 return BadRequest(res);
             }
         }
+
+        [HttpPost]
+        [Route("exchangerate")]
+        public async Task<IActionResult> getexchangeRate(exchangeRateModel exchangeRateModel)
+        {
+            Result res = new Result();
+
+            try
+            {
+                string url = "https://sandbox.valuetopup.com/api/v2/catalog/sku/exchangeRate";
+                string requestUrl = $"{url}/{exchangeRateModel.skuId}";
+
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                client.DefaultRequestHeaders.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
+
+                // ✅ FIXED: GET request
+                var response = await client.GetAsync(requestUrl);
+
+                response.EnsureSuccessStatusCode();
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                var data = JsonConvert.DeserializeObject<rateResponse>(jsonString);
+
+                res.process_result = true;
+                res.result = data.payLoad;
+
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                res.process_result = false;
+                res.result = ex.Message;
+
+                return BadRequest(res);
+            }
+        }
+
 
         [HttpPost]
         [Route("mobileTopup")]
@@ -381,31 +428,26 @@ namespace Preproject.Controllers
 
                 var response = await client.SendAsync(request);
                 var jsonString = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<TopupResponse>(jsonString);
 
-                //if (!response.IsSuccessStatusCode)
-                //{
-                //    return BadRequest(new
-                //    {
-                //        process_result = true,
-                //        result = JsonConvert.DeserializeObject<dynamic>(jsonString)
-                //    });
-                //}
-
-                //var result = JsonConvert.DeserializeObject<dynamic>(jsonString);
-                //return new JsonResult(new
-                //{
-                //    process_result = true,
-                //    result = result
-                //});
-                return Content(jsonString, "application/json");
+            
+                if(data.PayLoad is null)
+                {
+                    res.process_result = false;
+                    res.result = data.ResponseMessage;
+                }else
+                {
+                    res.process_result = true;
+                    res.result = data.PayLoad;
+                }
+               
+                return Ok(res);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
-
 
         [HttpGet]
         [Route("catagorylist")]
@@ -447,6 +489,7 @@ namespace Preproject.Controllers
         [Route("billPayment")]
         public async Task<IActionResult> billPay(billPayment billPayment)
         {
+            Result res = new Result();
             try
             {
                 var client = new HttpClient();
@@ -456,7 +499,7 @@ namespace Preproject.Controllers
                 request.Headers.Add("Accept", "application/json");
                 request.Headers.Add("Authorization", "Basic aW5maWNhcGk6bCRIc0hsY0YyNA==");
 
-                var payload = new
+                var billpay = new
                 {
                     accountNumber = billPayment.accountNumber,
                     amount = billPayment.amount,
@@ -469,20 +512,22 @@ namespace Preproject.Controllers
                     AdditionalInfo = billPayment.AdditionalInfos
                 };
 
-                string strJSON = JsonConvert.SerializeObject(payload);
+                string strJSON = JsonConvert.SerializeObject(billpay);
                 var content = new StringContent(strJSON, Encoding.UTF8, "application/json");
                 request.Content = content;
                 var response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-                var result = await response.Content.ReadAsStringAsync();
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<BillPay>(jsonString);
 
-                return Ok(result);
+                res.process_result = true;
+                res.result = data.billpay;
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
         [HttpPost]

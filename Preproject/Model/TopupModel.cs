@@ -22,35 +22,48 @@ namespace Preproject.Model
         public List<AdditionalInfo>? AdditionalInfos { get; set; }
     }
 
-    public class mobiletopupResponse
+    public class TopupResponse
     {
-        public dynamic? payload { get; set; }
-        //public List<mobileTopupModel> payLoad { get; set; }
-
+        public string? ResponseCode { get; set; }
+        public string? ResponseMessage { get; set; }
+        public PayLoad? PayLoad { get; set; }
     }
 
-
-
-
-
-
-
-    public class Product
+    public class PayLoad
     {
-        public string? skuId { get; set; }
-        public string? productName { get; set; }
-        public string? faceValue { get; set; }
-        public string? instructions { get; set; }
-        public string? productDescription { get; set; }
+        public long TransactionId { get; set; }
+        public string? TransactionDate { get; set; }
+        public decimal InvoiceAmount { get; set; }
+        public decimal FaceValue { get; set; }
+        public decimal Discount { get; set; }
+        public decimal Fee { get; set; }
+
+        public ProductResponseModel? Product { get; set; }
+        public TopupDetailModel? TopupDetail { get; set; }
+
+        public object? Pins { get; set; }
+        public object? GiftCardDetail { get; set; }
+        public object? SimInfo { get; set; }
+        public object? BillPaymentDetail { get; set; }
+        public object? EsimDetail { get; set; }
     }
 
-    public class TopupDetail
+    public class ProductResponseModel
     {
-        public string? localCurrencyAmount { get; set; }
-        public string? salesTaxAmount { get; set; }
-        public string? localCurrencyAmountExcludingTax { get; set; }
-        public string? destinationCurrency { get; set; }
-        public string? operatorTransactionId { get; set; }
+        public int SkuId { get; set; }
+        public string? ProductName { get; set; }
+        public decimal FaceValue { get; set; }
+        public string? Instructions { get; set; }
+        public string? ProductDescription { get; set; }
     }
+    public class TopupDetailModel
+    {
+        public decimal LocalCurrencyAmount { get; set; }
+        public decimal SalesTaxAmount { get; set; }
+        public decimal LocalCurrencyAmountExcludingTax { get; set; }
+        public string? DestinationCurrency { get; set; }
+        public string? OperatorTransactionId { get; set; }
+    }
+
 
 }

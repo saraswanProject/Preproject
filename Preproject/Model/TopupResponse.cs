@@ -3,11 +3,6 @@
 namespace Preproject.Model
 {
 
-
-     
-
-
-
     public class catbycountryModel
     {
         public string? categoryId { get; set; }
@@ -55,27 +50,7 @@ namespace Preproject.Model
        public List<pinTransaction> payLoad { get; set; }
     }
 
-    public class billPayment
-    {
-        public string? accountNumber { get; set; }
-        public string? amount { get; set; }
-        public string? correlationId { get; set; }
-        public string? skuId { get; set; }
-        public string? mobileNumber { get; set; }
-        public string? correlacheckDigitstionId { get; set; }
-        public string? senderMobile { get; set; }
-        public string? senderName { get; set; }
-        public string? transactionCurrencyCode { get; set; }
-        public List<AdditionalInfo> AdditionalInfos { get; set; }
-    }
-
-    public class billpayResponse
-    {
-      public List<billPayment> payLoad { get; set; }
-    }
-
-
-
+   
     public class esimtxn
     {
         public int correlationId { get; set; }
@@ -96,8 +71,8 @@ namespace Preproject.Model
 
     public class ApiResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
+      //  public string? responseCode { get; set; }
+      //  public string? responseMessage { get; set; }
         public List<PayLoadModel> payLoad { get; set; }
     }
 
@@ -111,8 +86,8 @@ namespace Preproject.Model
 
     public class CountryApiResponse
     {
-        public string? responseCode { get; set; }
-        public string? responseMessage { get; set; }
+       // public string? responseCode { get; set; }
+       // public string? responseMessage { get; set; }
         public List<CountryModel> payLoad { get; set; }
     }
 
@@ -138,6 +113,21 @@ namespace Preproject.Model
         public class countryResponse{
         public List<CountryModel> payLoad { get; set; }
     }
+
+
+    public class balanceResponseModel
+    {
+        public string? balance { get; set; }
+    }
+
+    public class balanceResponse
+    {
+        public bool process_result { get; set; }
+        public balanceResponseModel? payLoad { get; set; }
+    }
+
+
+
 
 }
 
